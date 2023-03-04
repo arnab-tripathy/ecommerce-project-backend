@@ -19,6 +19,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 	Page<Product> findByCategoryId(@Param("id") int id,Pageable pageable);
 	
 	
+	
 	//@Query(value="select * from product where product_name like '%Java%'",nativeQuery=true)
 	Page<Product> findByProductNameContainingIgnoreCase(@Param("name")String name,Pageable pageable);
 
