@@ -1,6 +1,7 @@
 package com.project.ecommerceapp.ecommerceapp.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -61,6 +62,19 @@ public class EcommerceController {
 	public ResponseEntity<Page<Product>> findProductByName(@RequestParam String name){
 		Pageable pageable=PageRequest.of(0, 15);
 		return new ResponseEntity<>(productService.findProductByName(name, pageable),HttpStatus.OK);
+	}
+	
+	@GetMapping("/getProductDetails")
+	public ResponseEntity<Product> getProductDetails(@RequestParam int id) {
+		Optional<Product> product=productService.getProductDetails(id);
+		System.out.print("getproduct"+id);
+		if(product.isPresent()) {
+			System.out.print("getproduct1"+product.get().getImage_url());
+			return new ResponseEntity<>(product.get(),HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+		}
 	}
 	
 }

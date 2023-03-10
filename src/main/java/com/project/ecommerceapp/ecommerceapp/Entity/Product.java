@@ -3,6 +3,7 @@ package com.project.ecommerceapp.ecommerceapp.Entity;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +30,7 @@ public class Product {
 	@Column(name="sku")
 	private String sku;
 	@Column(name="product_name")
-	private String productName;
+	private String name;
 	@Column(name="description")
 	private String description;
 	@Column(name="unit_price")

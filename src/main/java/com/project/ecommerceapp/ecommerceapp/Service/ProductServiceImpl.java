@@ -1,6 +1,7 @@
 package com.project.ecommerceapp.ecommerceapp.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,14 @@ public class ProductServiceImpl implements ProductService{
 		// TODO Auto-generated method stub
 		System.out.print(name);
 		//List<Product> prouctList=productRepository.findByNameContaining(name, pageable);
-		return productRepository.findByProductNameContainingIgnoreCase(name,pageable);
+		return productRepository.findByNameContainingIgnoreCase(name,pageable);
+	}
+
+	@Override
+	public Optional<Product> getProductDetails(int id) {
+		// TODO Auto-generated method stub
+		Optional<Product> product= productRepository.findById(id);
+		return product;
 	}
 
 }
