@@ -52,29 +52,37 @@ public class EcommerceController {
 	}
 	
 	@GetMapping("/getProductByCategory")
-	public ResponseEntity<Page<Product>> getProductByCategoryId(@RequestParam Integer id){
-		Pageable pageable=PageRequest.of(0, 15);
+	public ResponseEntity<Page<Product>> getProductByCategoryId(@RequestParam Integer id,@RequestParam int pageNum,@RequestParam int pageSize){
+		Pageable pageable=PageRequest.of(pageNum, pageSize);
 		System.out.println("id"+id);
 		 return new ResponseEntity<>(productService.getProdductsById(id, pageable),HttpStatus.OK);
 	}
 	
 	@GetMapping("/findProductByName")
-	public ResponseEntity<Page<Product>> findProductByName(@RequestParam String name){
-		Pageable pageable=PageRequest.of(0, 15);
+	public ResponseEntity<Page<Product>> findProductByName(@RequestParam String name,@RequestParam int pageNum,@RequestParam int pageSize){
+		Pageable pageable=PageRequest.of(pageNum,pageSize);
+		System.out.print(name+" "+pageNum+" "+pageSize);
 		return new ResponseEntity<>(productService.findProductByName(name, pageable),HttpStatus.OK);
 	}
 	
 	@GetMapping("/getProductDetails")
-	public ResponseEntity<Product> getProductDetails(@RequestParam int id) {
-		Optional<Product> product=productService.getProductDetails(id);
-		System.out.print("getproduct"+id);
-		if(product.isPresent()) {
-			System.out.print("getproduct1"+product.get().getImage_url());
-			return new ResponseEntity<>(product.get(),HttpStatus.OK);
-		}
-		else {
-			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<Product> getProductDetails(@RequestParam Integer id) {
+		 if (id == null || id <= 0) {
+		        return ResponseEntity.badRequest().build();
+		    }
+
+		    try {
+		        Optional<Product> product = productService.getProductDetails(id);
+		        if (product.isPresent()) {
+		            //log.info("Product with id {} found: {}", id, product.get().getImage_url());
+		            return ResponseEntity.ok(product.get());
+		        } else {
+		           // log.info("Product with id {} not found", id);
+		            return ResponseEntity.notFound().build();
+		        }
+		    } catch (Exception ex) {
+		       // log.error("Error retrieving product with id " + id, ex);
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		    }
 	}
-	
 }

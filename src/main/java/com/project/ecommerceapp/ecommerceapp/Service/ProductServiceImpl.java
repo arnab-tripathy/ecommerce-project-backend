@@ -26,7 +26,7 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public Page<Product> getProdductsById(int id,Pageable pageable) {
 		// TODO Auto-generated method stub
-		return productRepository.findByCategoryId(id, null);
+		return productRepository.findByCategoryId(id, pageable);
 	}
 
 	@Override
