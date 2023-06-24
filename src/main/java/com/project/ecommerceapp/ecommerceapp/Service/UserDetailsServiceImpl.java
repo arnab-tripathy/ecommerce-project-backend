@@ -9,7 +9,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.project.ecommerceapp.ecommerceapp.Entity.User;
 import com.project.ecommerceapp.ecommerceapp.Repository.UserRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
@@ -18,11 +20,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		
-	
-		
-User userInfo	=userRepo.findByEmail(username);
-		return null;
+		User user=null;
+
+		if(username.contains("@")){
+			user=userRepo.findByEmail(username).orElseThrow(()->new RuntimeException("user not found"));
+		}else {
+			 user = userRepo.findByNumber(username).orElseThrow(() -> new RuntimeException("user not found"));
+		}
+		return user;
 	}
 
 }

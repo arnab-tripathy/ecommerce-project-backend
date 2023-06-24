@@ -1,5 +1,7 @@
 package com.project.ecommerceapp.ecommerceapp.config;
 
+import com.project.ecommerceapp.ecommerceapp.security.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,38 +16,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.project.ecommerceapp.ecommerceapp.Service.UserDetailsServiceImpl;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 	
-	
-	   @Bean
-	    //authentication
-	    public UserDetailsService userDetailsService() {
-//	        UserDetails admin = User.withUsername("Basant")
-//	                .password(encoder.encode("Pwd1"))
-//	                .roles("ADMIN")
-//	                .build();
-//	        UserDetails user = User.withUsername("John")
-//	                .password(encoder.encode("Pwd2"))
-//	                .roles("USER","ADMIN","HR")
-//	                .build();
-//	        return new InMemoryUserDetailsManager(admin, user);
-	        return new UserDetailsServiceImpl();
-	    }
+	@Autowired
+	UserDetailsServiceImpl userDetailsService;
+
+	@Autowired
+	JwtAuthenticationFilter filter;
+
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.csrf().disable()
+	 http.csrf().disable()
 				.authorizeHttpRequests()
-				.requestMatchers("/products/**").permitAll()
+				.requestMatchers("/products/**").authenticated()
 				.and()
 				.authorizeHttpRequests()
 				.requestMatchers("/users/**")
-				.permitAll().and().formLogin().and().build();
-		
+				.permitAll();
+		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+		return http.build();
 	}
 	
 	   @Bean
@@ -56,7 +51,7 @@ public class SecurityConfig {
 	    @Bean
 	    public AuthenticationProvider authenticationProvider(){
 	        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
-	        authenticationProvider.setUserDetailsService(userDetailsService());
+	        authenticationProvider.setUserDetailsService(userDetailsService);
 	        authenticationProvider.setPasswordEncoder(passwordEncoder());
 	        return authenticationProvider;
 	    }

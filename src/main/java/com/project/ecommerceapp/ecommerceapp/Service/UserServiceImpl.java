@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.ecommerceapp.ecommerceapp.Entity.User;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UserRepository userRepo;
+
+	@Autowired
+	PasswordEncoder bCryptPasswordEncoder;
 	
 
 	
@@ -37,8 +41,8 @@ public class UserServiceImpl implements UserService {
 	public UserResponse createnewUser(UserSignupRequest userRequest) {
 		UserResponse userResponse=new UserResponse();
 		try {
-	//	String encodedPassword=bCryptPasswordEncoder.encode(userRequest.getPassword());
-	//	System.out.println("encoded"+encodedPassword);
+		String encodedPassword=bCryptPasswordEncoder.encode(userRequest.getPassword());
+		System.out.println("encoded"+encodedPassword);
 		//userRequest.setPassword(encodedPassword);
 		User user =new User();
 		//user.setId(1);
@@ -46,7 +50,7 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(userRequest.getEmail());
 		user.setLastt_name(userRequest.getLastName());
 		user.setNumber(userRequest.getNumber());
-		//user.setPassword(encodedPassword);
+		user.setPassword(encodedPassword);
 		
 		User savedUser=userRepo.save(user);
 		Status status=new Status();
