@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 		user.setLastt_name(userRequest.getLastName());
 		user.setNumber(userRequest.getNumber());
 		user.setPassword(encodedPassword);
-		
+		user.setRoles("USER");
 		User savedUser=userRepo.save(user);
 		Status status=new Status();
 		if(savedUser!=null) {
