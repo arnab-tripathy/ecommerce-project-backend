@@ -33,52 +33,25 @@ public class UserController {
 	@Autowired
 	private JwtHelper helper;
 
-	@Autowired
-	private AuthenticationManager manager;
+
 
 
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@PostMapping("/signup")
 	public UserResponse signup(@RequestBody UserSignupRequest userRequest) {
+		logger.info("create user called");
 		return userService.createnewUser(userRequest);
 	}
 	@PostMapping("/login")
 	public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
+		logger.info("login called"+request.toString());
 
-		boolean isEmailAuth=false;
-		if(request.getUserEmail()!=null && !request.getUserEmail().isEmpty()){
-			isEmailAuth=true;
-		}
-
-		if (isEmailAuth) {
-			this.doAuthenticate(request.getUserEmail(), request.getPassword());
-		} else {
-			this.doAuthenticate(request.getPhoneNumber(), request.getPassword());
-		}
-
-
-		UserDetails userDetails = userDetailsService.loadUserByUsername(isEmailAuth?request.getUserEmail():request.getPhoneNumber());
-		String token = this.helper.generateToken(userDetails);
-
-		JwtResponse response = JwtResponse.builder()
-				.jwtToken(token)
-				.username(userDetails.getUsername()).build();
-		return new ResponseEntity<>(response, HttpStatus.OK);
+JwtResponse jwtResponse=userService.loginUser(request);
+return new ResponseEntity<>(jwtResponse,HttpStatus.OK);
 	}
 
-	private void doAuthenticate(String email, String password) {
 
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
-		try {
-			manager.authenticate(authentication);
-
-
-		} catch (BadCredentialsException e) {
-			throw new BadCredentialsException(" Invalid Username or Password  !!");
-		}
-
-	}
 
 	@ExceptionHandler(BadCredentialsException.class)
 	public String exceptionHandler() {

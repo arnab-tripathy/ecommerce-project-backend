@@ -13,5 +13,7 @@ public class UserResponse {
 	
 	private HttpStatus StatusCode;
 	private UserDto user;
+	private String token;
+	private String failureReason;
 
 }

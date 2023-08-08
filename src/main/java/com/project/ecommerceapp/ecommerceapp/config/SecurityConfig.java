@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig  {
 	
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
@@ -38,7 +38,10 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests()
 				.requestMatchers("/users/**")
-				.permitAll();
+				.permitAll()
+			 .requestMatchers("/cart/**")
+			 .authenticated();
+	 http.cors();
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}

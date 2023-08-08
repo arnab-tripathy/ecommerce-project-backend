@@ -1,11 +1,7 @@
 package com.project.ecommerceapp.ecommerceapp.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,6 +33,11 @@ public class User implements UserDetails {
 	
 	@Column(name="roles")
 	private String roles;
+
+	@OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
+	@JsonIgnore
+	private ShoppingCart shoppingCart;
+
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
