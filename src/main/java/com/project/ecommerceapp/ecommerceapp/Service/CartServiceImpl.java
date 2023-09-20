@@ -75,4 +75,15 @@ public class CartServiceImpl implements  CartService {
        });
     return cartResponses;
     }
+
+    @Override
+    public void removeFromCart(Integer productId, String userEmail) {
+        logger.info("userEmail "+userEmail);
+
+       User user=userRepository.findByEmail(userEmail.trim()).get();
+       ShoppingCart shoppingCart=cartRepo.findByUserId(user.getId());
+
+
+        cartItemRepository.removeFromCart(productId,shoppingCart.getId());
+    }
 }

@@ -14,4 +14,6 @@ public interface CartService {
     public void addToCart(AddToCartRequest addToCartRequest);
 
     public List<CartResponse> getCartProducts(String UserId);
+
+    public void removeFromCart(Integer productId,String userEmail);
 }

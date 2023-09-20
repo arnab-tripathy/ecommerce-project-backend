@@ -31,6 +31,15 @@ public class CartController {
         return new ResponseEntity<>(true,HttpStatus.OK);
     }
 
+    @DeleteMapping("/deletefromcart")
+    public ResponseEntity<Boolean> deleteFromCart(@RequestParam Integer prodductId, @RequestParam String userEmail){
+
+            cartService.removeFromCart(prodductId,userEmail);
+            return new ResponseEntity<>(true,HttpStatus.OK);
+    }
+
+
+
     @GetMapping("/getcartproducts")
     public List<CartResponse> getCartProducts(@RequestParam String userName){
         //CartResponse cartResponse=new CartResponse();
