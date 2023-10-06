@@ -40,7 +40,8 @@ public class SecurityConfig  {
 				.requestMatchers("/users/**")
 				.permitAll()
 			 .requestMatchers("/cart/**")
-			 .authenticated();
+			 .authenticated()
+			 .requestMatchers("/order/**").authenticated();
 	 http.cors();
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();

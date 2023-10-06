@@ -47,8 +47,8 @@ public class UserController {
 	public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
 		logger.info("login called"+request.toString());
 
-JwtResponse jwtResponse=userService.loginUser(request);
-return new ResponseEntity<>(jwtResponse,HttpStatus.OK);
+	JwtResponse jwtResponse=userService.loginUser(request);
+	return new ResponseEntity<>(jwtResponse,HttpStatus.OK);
 	}
 
 

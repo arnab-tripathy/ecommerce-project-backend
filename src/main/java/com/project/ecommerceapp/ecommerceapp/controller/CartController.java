@@ -27,6 +27,7 @@ public class CartController {
 
     @PostMapping("/addtocart")
     public ResponseEntity<Boolean> addProductToCart(@RequestBody AddToCartRequest addToCartRequest){
+        System.out.println("add to cart called");
     cartService.addToCart(addToCartRequest);
         return new ResponseEntity<>(true,HttpStatus.OK);
     }

@@ -52,6 +52,7 @@ public class CartServiceImpl implements  CartService {
         }
         else {
             shoppingCartItem.setProductId(addToCartRequest.getProductId());
+            shoppingCartItem.setQuantity(1);
             shoppingCartItem.setCartId(userCart.getId());
             cartItemRepository.save(shoppingCartItem);
         }
