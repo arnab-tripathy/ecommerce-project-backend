@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
+@Table(name = "address")
 public class Address {
     @Column(name="id")
     @Id
