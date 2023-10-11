@@ -25,6 +25,7 @@ public class CartController {
 @Autowired
     CartService cartService;
 
+
     @PostMapping("/addtocart")
     public ResponseEntity<Boolean> addProductToCart(@RequestBody AddToCartRequest addToCartRequest){
         System.out.println("add to cart called");

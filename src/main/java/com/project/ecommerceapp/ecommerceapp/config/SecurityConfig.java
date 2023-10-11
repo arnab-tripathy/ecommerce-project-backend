@@ -17,6 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.project.ecommerceapp.ecommerceapp.Service.UserDetailsServiceImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
 @Configuration
@@ -32,7 +35,7 @@ public class SecurityConfig  {
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	 http.csrf().disable()
+	 http.cors().and().csrf().disable()
 				.authorizeHttpRequests()
 				.requestMatchers("/products/**").permitAll()
 				.and()
@@ -42,7 +45,7 @@ public class SecurityConfig  {
 			 .requestMatchers("/cart/**")
 			 .authenticated()
 			 .requestMatchers("/order/**").authenticated();
-	 http.cors();
+
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
@@ -63,4 +66,16 @@ public class SecurityConfig  {
 	    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 	        return config.getAuthenticationManager();
 	    }
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration corsConfig = new CorsConfiguration();
+		corsConfig.applyPermitDefaultValues(); // Allow all headers, methods, and origins.
+		corsConfig.addAllowedOrigin("*"); // Allow requests from all origins.
+//		corsConfig.setAllowCredentials(true); // Allow credentials like cookies and authentication.
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfig);
+		return source;
+	}
 }

@@ -19,7 +19,7 @@ import com.project.ecommerceapp.ecommerceapp.Service.ProductService;
 
 @RestController
 @RequestMapping(path="/products")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(originPatterns = "*")
 public class EcommerceController {
 
 	
